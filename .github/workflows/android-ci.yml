@@ -2,12 +2,15 @@ name: Verify & Build CanonMultiCam Pro
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, master ]
   workflow_dispatch:
 
 jobs:
   verify-and-build:
     runs-on: ubuntu-latest
+    env:
+      GRADLE_OPTS: "-Xmx3g -Dorg.gradle.daemon=false"
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -18,22 +21,23 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Setup Gradle 8.7
+      - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
-        with:
-          gradle-version: '8.7'
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
 
       - name: Run Detekt Strict Static Analysis
-        run: gradle detekt --stacktrace
+        run: ./gradlew detekt --stacktrace
 
       - name: Run Deterministic Protocol & Temporal Proof Tests
-        run: gradle testDebugUnitTest --stacktrace
+        run: ./gradlew testDebugUnitTest --stacktrace
 
       - name: Run Android Lint
-        run: gradle lintDebug --stacktrace
+        run: ./gradlew lintDebug --stacktrace
 
       - name: Assemble Verified Debug APK
-        run: gradle assembleDebug --stacktrace
+        run: ./gradlew assembleDebug --stacktrace
 
       - name: Upload Verified APK Artifact
         uses: actions/upload-artifact@v4
