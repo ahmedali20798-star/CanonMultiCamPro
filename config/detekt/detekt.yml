@@ -1,0 +1,67 @@
+build:
+  maxIssues: 0
+
+config:
+  validation: true
+
+complexity:
+  active: true
+  LongMethod:
+    active: true
+    threshold: 140
+  LongParameterList:
+    active: true
+    functionThreshold: 12
+    constructorThreshold: 12
+  CyclomaticComplexMethod:
+    active: true
+    threshold: 22
+
+coroutines:
+  active: true
+  GlobalScopeUsage:
+    active: true
+  RedundantSuspendModifier:
+    active: true
+  SuspendFunWithFlowReturnType:
+    active: true
+
+exceptions:
+  active: true
+  PrintStackTrace:
+    active: true
+  ThrowingExceptionsWithoutMessageOrCause:
+    active: true
+  TooGenericExceptionCaught:
+    active: false
+
+performance:
+  active: true
+  ForEachOnRange:
+    active: true
+  SpreadOperator:
+    active: true
+
+potential-bugs:
+  active: true
+  UnsafeCallOnNullableType:
+    active: true
+  UnsafeCast:
+    active: true
+  UnreachableCode:
+    active: true
+
+style:
+  active: true
+  ForbiddenMethodCall:
+    active: true
+    methods:
+      - value: 'java.lang.Thread.sleep'
+        reason: 'Use coroutine delay() instead of blocking OS threads.'
+      - value: 'java.net.NetworkInterface.getNetworkInterfaces'
+        reason: 'Use NetworkBinder cached IP state to prevent battery drain.'
+  MagicNumber:
+    active: false
+  MaxLineLength:
+    active: true
+    maxLineLength: 140
